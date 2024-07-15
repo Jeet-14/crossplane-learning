@@ -1,0 +1,53 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: dynamo-with-bucket
+spec:
+  patchSets:
+    - name: reusable-patchset
+      patches:
+      - type: FromCompositeFieldPath
+        fromFieldPath: "spec.location"
+        toFieldPath: "spec.forProvider.region"
+        transforms:
+          - type: map
+            map: 
+              EU: "eu-north-1"
+              US: "us-east-2"
+              AP: "ap-south-1"
+  resources:
+    - name: s3Bucket
+      base:
+        apiVersion: s3.aws.upbound.io/v1beta1
+        kind: Bucket
+        metadata:
+          name: cp-bucket-jd
+        spec:
+          forProvider:
+            region: us-east-2
+          providerConfigRef:
+            name: default
+      patches:
+        - type: PatchSet
+          patchSetName: reusable-patchset
+    - name: dynamoDB
+      base:
+        apiVersion: dynamodb.aws.upbound.io/v1beta1
+        kind: Table
+        metadata:
+          name: cp-database-jd
+        spec:
+          forProvider:
+            region: "us-east-2"
+            writeCapacity: 1
+            readCapacity: 1
+            attribute:
+              - name: S3ID
+                type: S
+            hashKey: S3ID
+      patches:
+        - type: PatchSet
+          patchSetName: reusable-patchset
+  compositeTypeRef:
+    apiVersion: database.example.com/v1alpha1
+    kind: NoSQL

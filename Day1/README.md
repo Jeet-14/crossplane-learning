@@ -84,3 +84,8 @@ Events:
   ----     ------                   ----                 ----                                            -------
   Warning  CannotConnectToProvider  22s (x8 over 2m24s)  managed/s3.aws.upbound.io/v1beta1, kind=bucket  cannot initialize the Terraform plugin SDK async external client: cannot get terraform setup: cannot get referenced Provider: default: ProviderConfig.aws.upbound.io "default" not found
 ```
+
+```
+kubectl delete -f managed-s3-bucket.yaml 
+error: error when deleting "managed-s3-bucket.yaml": resource name may not be empty
+```

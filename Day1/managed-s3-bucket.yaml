@@ -5,5 +5,7 @@ metadata:
 spec:
   forProvider:
     region: ap-south-1
+    tags:
+      Environment: Production
   providerConfigRef:
     name: default
