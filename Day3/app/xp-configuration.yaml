@@ -1,0 +1,6 @@
+apiVersion: pkg.crossplane.io/v1
+kind: Configuration
+metadata:
+  name: test-configuration
+spec:
+  package: xpkg.upbound.io/jeet-14/cp-test-101:v0.0.1
